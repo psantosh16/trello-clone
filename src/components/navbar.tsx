@@ -14,7 +14,7 @@ export default function Navbar() {
           loading="lazy"
           className="w-6 h-6 cursor-pointer select-none pointer-events-none"
         />{" "}
-        Trello
+        Tasuku
       </Link>
       <Button size="sm" asChild variant="default">
         <Link href="/login">Login</Link>
