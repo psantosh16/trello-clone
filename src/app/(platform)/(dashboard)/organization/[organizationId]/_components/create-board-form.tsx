@@ -75,7 +75,7 @@ export const BoardCreationForm = () => {
                     {...field}
                     className={cn(
                       "",
-                      isLoading ? "cursor-not-allowed border-neutral-500" : ""
+                      isLoading ? "cursor-not-allowed border-neutral-500" : "",
                     )}
                   />
                 </FormControl>
