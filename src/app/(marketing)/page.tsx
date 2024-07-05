@@ -22,7 +22,7 @@ export default function MarketingPage() {
         one place. Get started today. It's free!, A better way to work together.
       </p>
       <Button size="lg" className="mt-6" asChild>
-        <Link href="/login">Get it for Free</Link>
+        <Link href="/sign-up">Get it for Free</Link>
       </Button>
     </div>
   );

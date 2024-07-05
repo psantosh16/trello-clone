@@ -1,4 +1,5 @@
-import Navbar from "@/components/navbar";
+import Footer from "./_components/footer";
+import Navbar from "./_components/navbar";
 
 export default function MarketingLayout({
   children,
@@ -7,10 +8,9 @@ export default function MarketingLayout({
 }) {
   return (
     <div className="h-full bg-slate-100">
-      {/* Navbar */}
       <Navbar />
       <main className="pt-40 pb-20">{children}</main>
-      {/* Footer */}
+      <Footer />
     </div>
   );
 }
