@@ -4,14 +4,11 @@ import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-export const createBoard = async ({ title }: { title: string }) => {
-  /* 
-      This function creates a [new board] in the Postgree SQL database.
-  */
+export const deleteBoard = async ({ id }: { id: string }) => {
   try {
-    await db.board.create({
-      data: {
-        title: title,
+    await db.board.delete({
+      where: {
+        id: id,
       },
     });
   } catch (e) {
