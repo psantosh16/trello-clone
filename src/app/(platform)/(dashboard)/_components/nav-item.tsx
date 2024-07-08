@@ -65,7 +65,7 @@ export const NavItem = ({
         }}
         className={cn(
           "flex items-center gap-x-2 p-1.5 text-neutral-700  rounded-md hover:bg-neutral-500/10  transition text-start no-underline hover:no-underline",
-          isActive && !isExpanded && "bg-sky-500/10 text-sky-700"
+          isActive && !isExpanded && "bg-sky-500/10 text-sky-700",
         )}
       >
         <div className="flex items-center gap-x-2">
@@ -87,7 +87,7 @@ export const NavItem = ({
             size="sm"
             className={cn(
               "w-full font-normal justify-start pl-10 mb-1",
-              pathname === item.href && "bg-sky-500/10 text-sky-700"
+              pathname === item.href && "bg-sky-500/10 text-sky-700",
             )}
             variant="ghost"
             onClick={() => onClick(item.href)}

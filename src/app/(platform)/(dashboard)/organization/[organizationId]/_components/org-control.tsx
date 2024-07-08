@@ -9,14 +9,10 @@ export const OrgControl = () => {
   const params = useParams();
   const { setActive, isLoaded } = useOrganizationList();
   useEffect(() => {
-    console.log("🟢 OrganizationList loaded");
     if (isLoaded) {
       if (!setActive) {
-        console.error("🔴 OrganizationList not found");
         return;
       }
-      console.log("🔥🔥🔥ordId from params: ", params.organizationId);
-      console.log("🟢 setActive setting");
       setActive({ organization: params.organizationId as string });
     }
   }, [setActive, params.organizationId]);
