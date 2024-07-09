@@ -1,6 +1,17 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import { useRef } from "react";
 import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
+import { createBoard } from "@/actions/create-board/index";
+import { useAction } from "@/hooks/useAction";
+import { CreateBoardSchema } from "@/actions/create-board/schema";
+import { toast } from "sonner";
+import { FormPicker } from "@/components/form/form-picker";
+import { PopoverClose } from "@/components/ui/popover";
 import {
   Form,
   FormControl,
@@ -9,15 +20,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
-import { createBoard } from "@/actions/create-board/index";
-import { useAction } from "@/hooks/useAction";
-import { CreateBoardSchema } from "@/actions/create-board/schema";
-import { toast } from "sonner";
 
 export const BoardCreationForm = () => {
-  const { form, isLoading, execute } = useAction(
+  const router = useRouter();
+  const popButtonRef = useRef<ElementRef<"button">>(null);
+  const { form, isLoading, execute, fieldErrors } = useAction(
     {
       schema: CreateBoardSchema,
       defaultValues: {
@@ -27,25 +34,35 @@ export const BoardCreationForm = () => {
     },
     {
       onSuccess: (data) => {
-        console.log("Board created successfully", data);
-        toast.success("Board created successfully");
+        toast.success("Board created!");
+        popButtonRef.current?.click();
+        router.push(`/board/${data.id}`);
       },
       onError: (error) => {
-        console.error("Error creating board", error);
         toast.error(error);
       },
-    }
+    },
   );
+
+  function handleSubmit(formData: FormData) {
+    const title = formData.get("title") as string;
+    const image = formData.get("image") as string;
+    execute({ title, image });
+  }
 
   return (
     <div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(execute)} className="grid gap-y-2">
+        <form action={handleSubmit} className="grid gap-y-2">
           <FormField
             name="title"
             control={form.control}
             render={({ field }) => (
               <FormItem>
+                <FormPicker
+                  id="asa"
+                  errors={fieldErrors as Record<string, string[]>}
+                />
                 <FormLabel>Title</FormLabel>
                 <FormControl>
                   <Input
@@ -54,10 +71,18 @@ export const BoardCreationForm = () => {
                     {...field}
                     className={cn(
                       "",
-                      isLoading ? "cursor-not-allowed border-neutral-500" : ""
+                      isLoading ? "cursor-not-allowed border-neutral-500" : "",
                     )}
                   />
                 </FormControl>
+                <PopoverClose asChild ref={popButtonRef}>
+                  <Button
+                    variant="ghost"
+                    className="w-auto h-auto absolute top-1 right-2 text-neutral-600"
+                  >
+                    <X className="size-4" />
+                  </Button>
+                </PopoverClose>
                 <FormMessage />
               </FormItem>
             )}

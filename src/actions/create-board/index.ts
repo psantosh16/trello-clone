@@ -4,35 +4,59 @@ import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { ActionState } from "@/hooks/useAction";
+import { InputType, OutputType } from "./type";
 
-const handler = async ({ title }: { title: string }): Promise<ActionState> => {
-  const { orgId } = auth();
-  let board;
+const handler = async (
+  data: InputType
+): Promise<ActionState<InputType, OutputType>> => {
+  const { orgId, userId } = auth();
 
-  if (!orgId) {
+  if (!orgId || !userId) {
     return {
-      success: false,
       error: "Organization not found",
     };
   }
+
+  const { title, image } = data;
+  const [imageId, imageThumbUrl, imageFullUrl, imageLinkHtml, imageUserName] =
+    image.split("|");
+
+  if (
+    !imageId ||
+    !imageThumbUrl ||
+    !imageFullUrl ||
+    !imageLinkHtml ||
+    !imageUserName
+  ) {
+    return {
+      error: "Missing fields. Failed to create board.",
+    };
+  }
+
+  let board;
 
   try {
     board = await db.board.create({
       data: {
         title,
+        orgId,
+        imageId,
+        imageThumbUrl,
+        imageFullUrl,
+        imageLinkHtml,
+        imageUserName,
       },
     });
   } catch (error) {
     return {
-      success: false,
       error: "Failed to create",
     };
   }
 
-  revalidatePath(`/boards/${title}`);
+  revalidatePath(`/boards/${board.id}`);
+
   return {
-    success: true,
-    data: board,
+    data: board as OutputType,
   };
 };
 

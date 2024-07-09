@@ -72,6 +72,7 @@ export const NavItem = ({
           <div className="size-7 relative">
             <Image
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               src={organization.imageUrl}
               alt={organization.name}
               className="rounded-sm object-cover"

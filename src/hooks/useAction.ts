@@ -5,21 +5,23 @@ import {
   UseFormReturn,
   FieldValues,
   DefaultValues,
+  FieldErrors,
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-export type ActionState = {
+export type ActionState<
+  TInput extends FieldValues,
+  TOutput extends FieldValues,
+> = {
+  fieldErrors?: FieldErrors<TInput>;
   error?: string;
-  success: boolean;
-  data?: {
-    [key: string]: any;
-  };
+  data?: TOutput;
 };
 
-type UseActionProps<TInput, TOutput> = {
+type UseActionProps<TInput extends FieldValues, TOutput extends FieldValues> = {
   schema: ZodSchema<TInput>;
   defaultValues: DefaultValues<TOutput>;
-  method: (data: TInput) => Promise<ActionState>;
+  method: (data: TInput) => Promise<ActionState<TInput, TOutput>>;
   options?: ActionOptions<TInput>;
 };
 
@@ -29,13 +31,19 @@ interface ActionOptions<T> {
   onCompleted?: () => void;
 }
 
-export function useAction<TInput, TOutput extends FieldValues>(
+export function useAction<
+  TInput extends FieldValues,
+  TOutput extends FieldValues,
+>(
   action: UseActionProps<TInput, TOutput>,
   options: ActionOptions<TInput> = {}
 ) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
-  const [data, setData] = useState<ActionState | undefined>(undefined);
+  const [fieldErrors, setFieldErrors] = useState<
+    FieldErrors<TInput> | undefined
+  >(undefined);
+  const [data, setData] = useState<TOutput | undefined>(undefined);
 
   const form: UseFormReturn<TOutput> = useForm<TOutput>({
     resolver: zodResolver(action.schema),
@@ -51,18 +59,24 @@ export function useAction<TInput, TOutput extends FieldValues>(
           console.log("useAction Data error ", data.error);
           options?.onError?.(data.error);
           setError(data.error.message);
-          return;
         }
-        const result = await action.method(data.data);
-        if (!result.success) {
+        const result = await action.method(data?.data!);
+        if (result.error) {
           console.log("useAction error ", result.error);
           options.onError?.(result.error);
           setError(result.error);
-          return;
         }
-        console.log("useAction success ", result.data);
-        options.onSuccess?.(result.data);
-        setData(result);
+        if (result.fieldErrors) {
+          console.log("useAction fieldError ", result.error);
+          options.onError?.(result.error);
+          setFieldErrors(result.fieldErrors!);
+        }
+        if (result.data) {
+          console.log("useAction data ", result.error);
+          options.onSuccess?.(result.data);
+          setData(result.data);
+        }
+
         form.reset();
       } finally {
         setIsLoading(false);
@@ -72,5 +86,5 @@ export function useAction<TInput, TOutput extends FieldValues>(
     [isLoading, action]
   );
 
-  return { form, isLoading, execute, options, error, data };
+  return { form, isLoading, execute, options, error, data, fieldErrors };
 }

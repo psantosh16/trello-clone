@@ -2,7 +2,9 @@ import Logo from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
 import { Plus } from "lucide-react";
+// import { Skeleton } from "@/components/ui/skeleton";
 import { MobileSidebar } from "./mobile-sidebar";
+import { FormPopover } from "@/components/form/form-popover";
 
 export const Navbar = () => {
   return (
@@ -12,20 +14,24 @@ export const Navbar = () => {
         <div className="hidden md:flex ">
           <Logo />
         </div>
-        <Button
-          size="sm"
-          variant="primary"
-          className="rounded-sm hidden md:block h-auto py-1.5 px-2"
-        >
-          Create
-        </Button>
-        <Button
-          size="sm"
-          variant="primary"
-          className="rounded-sm block md:hidden"
-        >
-          <Plus className="size-4" />
-        </Button>
+        <FormPopover>
+          <Button
+            size="sm"
+            variant="primary"
+            className="rounded-sm hidden md:block h-auto py-1.5 px-2"
+          >
+            Create
+          </Button>
+        </FormPopover>
+        <FormPopover>
+          <Button
+            size="sm"
+            variant="primary"
+            className="rounded-sm block md:hidden"
+          >
+            <Plus className="size-4" />
+          </Button>
+        </FormPopover>
       </div>
       <div className="ml-auto flex items-center gap-x-2">
         <OrganizationSwitcher
@@ -57,3 +63,12 @@ export const Navbar = () => {
     </nav>
   );
 };
+
+// Navbar.Skeleton = function NavbarSkeleton() {
+//   return (
+//     <div className="flex gap-x-2">
+//       <Skeleton className="w-20 h-8" />
+//       <Skeleton className="size-8 rounded-full" />
+//     </div>
+//   );
+// };
