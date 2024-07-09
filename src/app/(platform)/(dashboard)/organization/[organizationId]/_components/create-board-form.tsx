@@ -23,7 +23,7 @@ import {
 
 export const BoardCreationForm = () => {
   const router = useRouter();
-  const popButtonRef = useRef<ElementRef<"button">>(null);
+  const popButtonRef = useRef(null);
   const { form, isLoading, execute, fieldErrors } = useAction(
     {
       schema: CreateBoardSchema,
