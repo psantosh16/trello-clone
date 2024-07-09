@@ -1,15 +1,7 @@
 "use client";
 
-import { X } from "lucide-react";
-import { Button } from "../ui/button";
-import {
-  Popover,
-  PopoverClose,
-  PopoverContent,
-  PopoverTrigger,
-} from "../ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import BoardCreationForm from "@/app/(platform)/(dashboard)/organization/[organizationId]/_components/create-board-form";
-import { useAction } from "@/hooks/useAction";
 
 interface FormPopoverProps {
   children: React.ReactNode;
@@ -24,8 +16,6 @@ export const FormPopover = ({
   align = "center",
   sideOffset = 10,
 }: FormPopoverProps) => {
-
-
   return (
     <Popover>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
@@ -38,14 +28,6 @@ export const FormPopover = ({
         <div className="text-sm font-medium text-center text-neutral-600 pb-4">
           Create New Board
         </div>
-        <PopoverClose asChild>
-          <Button
-            variant="ghost"
-            className="w-auto h-auto absolute top-2 right-2 text-neutral-600"
-          >
-            <X className="size-4" />
-          </Button>
-        </PopoverClose>
         <BoardCreationForm />
       </PopoverContent>
     </Popover>

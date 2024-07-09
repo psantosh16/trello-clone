@@ -6,7 +6,6 @@ import { useLocalStorage } from "usehooks-ts";
 import { useOrganization, useOrganizationList } from "@clerk/nextjs";
 
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Accordion } from "@/components/ui/accordion";
 import { NavItem, Organization } from "./nav-item";
@@ -41,7 +40,7 @@ export const Sidebar = ({ storageKey = "t-sidebar-state" }: SidebarProps) => {
   };
 
   if (!isLoadedOrg || !isLoadedOrgList || userMemberships.isLoading)
-    return <Skeleton />;
+    return <Sidebar.Skeleton />;
 
   return (
     <>
@@ -71,5 +70,22 @@ export const Sidebar = ({ storageKey = "t-sidebar-state" }: SidebarProps) => {
         ))}
       </Accordion>
     </>
+  );
+};
+
+Sidebar.Skeleton = function SidebarSkeleton() {
+  return (
+    <div className="space-y-4 flex flex-col w-full">
+      <div className="flex justify-between">
+        <Skeleton className="w-16 h-10 bg-muted" />
+        <Skeleton className="size-10 bg-muted" />
+      </div>
+      <div className="flex flex-col gap-y-2">
+        <Skeleton className="w-full h-10" />
+        <Skeleton className="w-full h-10" />
+        <Skeleton className="w-full h-10" />
+        <Skeleton className="w-full h-10" />
+      </div>
+    </div>
   );
 };
