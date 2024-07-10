@@ -3,76 +3,74 @@ import { z, ZodSchema } from "zod";
 import {
   useForm,
   UseFormReturn,
-  FieldValues,
-  DefaultValues,
-  FieldErrors,
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-export type ActionState<
-  TInput extends FieldValues,
-  TOutput extends FieldValues,
-> = {
-  fieldErrors?: FieldErrors<TInput>;
+// Means TInput is the input type and TOutput is the output type
+// ActionState is the return type of the {fieldErrors, error and data}
+export type ActionState<TInput, TOutput> = {
+  fieldErrors?: string[];
   error?: string;
   data?: TOutput;
+  // Data is the output type
 };
 
-type UseActionProps<TInput extends FieldValues, TOutput extends FieldValues> = {
+type UseActionProps<TInput , TOuput> = {
   schema: ZodSchema<TInput>;
-  defaultValues: DefaultValues<TOutput>;
-  method: (data: TInput) => Promise<ActionState<TInput, TOutput>>;
-  options?: ActionOptions<TInput>;
+  method: (data: TInput) => Promise<ActionState<TInput , TOuput>>;
+  options?: ActionOptions;
 };
 
-interface ActionOptions<T> {
+interface ActionOptions {
   onSuccess?: (data: any) => void;
   onError?: (error: any) => void;
   onCompleted?: () => void;
 }
 
 export function useAction<
-  TInput extends FieldValues,
-  TOutput extends FieldValues,
+TInput , TOuput 
 >(
-  action: UseActionProps<TInput, TOutput>,
-  options: ActionOptions<TInput> = {}
+  action: UseActionProps<TInput , TOuput>,
+  options: ActionOptions = {}
 ) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
   const [fieldErrors, setFieldErrors] = useState<
-    FieldErrors<TInput> | undefined
+    string[] | undefined
   >(undefined);
-  const [data, setData] = useState<TOutput | undefined>(undefined);
-
-  const form: UseFormReturn<TOutput> = useForm<TOutput>({
+  const [data, setData] = useState<TOuput | undefined>(undefined);
+  const form: UseFormReturn = useForm({
     resolver: zodResolver(action.schema),
-    defaultValues: action.defaultValues,
   });
+
 
   const execute = useCallback(
     async (values: z.infer<typeof action.schema>) => {
       setIsLoading(true);
       try {
+        console.log("before data ", values);
         const data = action.schema.safeParse(values);
+        console.log("after data ", data);
         if (!data.success) {
-          console.log("useAction Data error ", data.error);
-          options?.onError?.(data.error);
-          setError(data.error.message);
+          console.log("useAction Data error ", data.error.errors[0].message);
+          options?.onError?.(data.error.errors[0].message);
+          setError(data.error.errors[0].message);
+          return;
         }
         const result = await action.method(data?.data!);
         if (result.error) {
-          console.log("useAction error ", result.error);
+          console.log("useAction error ", result.fieldErrors);
           options.onError?.(result.error);
           setError(result.error);
         }
         if (result.fieldErrors) {
           console.log("useAction fieldError ", result.error);
           options.onError?.(result.error);
-          setFieldErrors(result.fieldErrors!);
+          setFieldErrors(result.fieldErrors);
+          setData(undefined);
         }
         if (result.data) {
-          console.log("useAction data ", result.error);
+          console.log("useAction data ", result.data);
           options.onSuccess?.(result.data);
           setData(result.data);
         }
@@ -83,7 +81,7 @@ export function useAction<
         options?.onCompleted?.();
       }
     },
-    [isLoading, action]
+    [action, form, options]
   );
 
   return { form, isLoading, execute, options, error, data, fieldErrors };

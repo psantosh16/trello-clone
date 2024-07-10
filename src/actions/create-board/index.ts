@@ -11,13 +11,29 @@ const handler = async (
 ): Promise<ActionState<InputType, OutputType>> => {
   const { orgId, userId } = auth();
 
-  if (!orgId || !userId) {
+
+  if (!orgId || !userId || orgId === undefined || userId === undefined) {
     return {
-      error: "Organization not found",
+      error: "Organization or user not found",
     };
   }
 
+  
   const { title, image } = data;
+  
+  if (!data || data === undefined || data === null) { 
+    console.log("Data is missing",data);
+    return {
+      error: "Data is missing",
+    };
+  }
+  
+  if (!title || !image || title === undefined || image === undefined || title === "" || image === "") {
+    return {
+      error: "Title or image is missing",
+    };
+  }
+
   const [imageId, imageThumbUrl, imageFullUrl, imageLinkHtml, imageUserName] =
     image.split("|");
 
@@ -34,7 +50,6 @@ const handler = async (
   }
 
   let board;
-
   try {
     board = await db.board.create({
       data: {

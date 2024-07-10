@@ -12,14 +12,14 @@ import { Input } from "../ui/input";
 
 interface FormPickerProps {
   id: string;
-  errors?: Record<string, string[] | undefined>;
+  errors?:  string[] | undefined;
 }
 
 export const FormPicker = ({ id, errors }: FormPickerProps) => {
   const { pending } = useFormStatus();
   const [images, setImages] =
     useState<Array<Record<string, any>>>(defaultImages);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [selectedImage, setSelectedImage] = useState<string>("");
 
   useEffect(() => {
@@ -65,6 +65,7 @@ export const FormPicker = ({ id, errors }: FormPickerProps) => {
             )}
             onClick={() => {
               if (pending) return;
+              console.log("Image selected", image.id);
               setSelectedImage(image.id);
             }}
           >
@@ -76,10 +77,10 @@ export const FormPicker = ({ id, errors }: FormPickerProps) => {
             <Input
               type="radio"
               name="image"
-              readOnly
               value={`${image.id}|${image.urls.thumb}|${image.urls.full}|${image.links.html}|${image.user.name}`}
               className="hidden"
               checked={selectedImage === image.id}
+              readOnly
               disabled={pending}
             />
             <Image
@@ -98,8 +99,8 @@ export const FormPicker = ({ id, errors }: FormPickerProps) => {
           </div>
         ))}
       </div>
-      {errors && errors[id] && (
-        <div className="text-red-500 text-sm mt-1">{errors[id]}</div>
+      {errors && errors && (
+        <div className="text-red-500 text-sm mt-1">{errors}</div>
       )}
     </div>
   );
