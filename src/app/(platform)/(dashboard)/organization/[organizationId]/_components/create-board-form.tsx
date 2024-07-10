@@ -23,13 +23,10 @@ import {
 
 export const BoardCreationForm = () => {
   const router = useRouter();
-  const popButtonRef = useRef<ElementRef<"button">>(null);
+  const popButtonRef = useRef<HTMLButtonElement>(null);
   const { form, isLoading, execute, fieldErrors } = useAction(
     {
       schema: CreateBoardSchema,
-      defaultValues: {
-        title: "",
-      },
       method: createBoard,
     },
     {
@@ -61,7 +58,7 @@ export const BoardCreationForm = () => {
               <FormItem>
                 <FormPicker
                   id="asa"
-                  errors={fieldErrors as Record<string, string[]>}
+                  errors={fieldErrors} //TODO change this
                 />
                 <FormLabel>Title</FormLabel>
                 <FormControl>
