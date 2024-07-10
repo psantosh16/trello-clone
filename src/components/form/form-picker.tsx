@@ -12,7 +12,7 @@ import { Input } from "../ui/input";
 
 interface FormPickerProps {
   id: string;
-  errors?:  string[] | undefined;
+  errors?: string[] | undefined;
 }
 
 export const FormPicker = ({ id, errors }: FormPickerProps) => {
@@ -61,7 +61,7 @@ export const FormPicker = ({ id, errors }: FormPickerProps) => {
             key={image.id}
             className={cn(
               "relative cursor-pointer aspect-video group hover:opacity-75 transition bg-muted",
-              pending && "cursor-auto opacity-50 hover:opacity-50"
+              pending && "cursor-auto opacity-50 hover:opacity-50",
             )}
             onClick={() => {
               if (pending) return;

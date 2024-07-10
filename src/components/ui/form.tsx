@@ -24,7 +24,7 @@ type FormFieldContextValue<
 };
 
 const FormFieldContext = React.createContext<FormFieldContextValue>(
-  {} as FormFieldContextValue
+  {} as FormFieldContextValue,
 );
 
 const FormField = <
@@ -68,7 +68,7 @@ type FormItemContextValue = {
 };
 
 const FormItemContext = React.createContext<FormItemContextValue>(
-  {} as FormItemContextValue
+  {} as FormItemContextValue,
 );
 
 const FormItem = React.forwardRef<
@@ -159,7 +159,7 @@ const FormMessage = React.forwardRef<
       id={formMessageId}
       className={cn(
         "text-sm font-medium py-1 rounded-sm bg-rose-200 text-destructive flex gap-x-2 items-center justify-center",
-        className
+        className,
       )}
       {...props}
     >

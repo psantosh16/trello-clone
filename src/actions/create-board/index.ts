@@ -7,10 +7,9 @@ import { ActionState } from "@/hooks/useAction";
 import { InputType, OutputType } from "./type";
 
 const handler = async (
-  data: InputType
+  data: InputType,
 ): Promise<ActionState<InputType, OutputType>> => {
   const { orgId, userId } = auth();
-
 
   if (!orgId || !userId || orgId === undefined || userId === undefined) {
     return {
@@ -18,17 +17,23 @@ const handler = async (
     };
   }
 
-  
   const { title, image } = data;
-  
-  if (!data || data === undefined || data === null) { 
-    console.log("Data is missing",data);
+
+  if (!data || data === undefined || data === null) {
+    console.log("Data is missing", data);
     return {
       error: "Data is missing",
     };
   }
-  
-  if (!title || !image || title === undefined || image === undefined || title === "" || image === "") {
+
+  if (
+    !title ||
+    !image ||
+    title === undefined ||
+    image === undefined ||
+    title === "" ||
+    image === ""
+  ) {
     return {
       error: "Title or image is missing",
     };

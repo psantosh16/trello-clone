@@ -1,9 +1,6 @@
 import { useCallback, useState } from "react";
 import { z, ZodSchema } from "zod";
-import {
-  useForm,
-  UseFormReturn,
-} from "react-hook-form";
+import { useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 // Means TInput is the input type and TOutput is the output type
@@ -15,9 +12,9 @@ export type ActionState<TInput, TOutput> = {
   // Data is the output type
 };
 
-type UseActionProps<TInput , TOuput> = {
+type UseActionProps<TInput, TOuput> = {
   schema: ZodSchema<TInput>;
-  method: (data: TInput) => Promise<ActionState<TInput , TOuput>>;
+  method: (data: TInput) => Promise<ActionState<TInput, TOuput>>;
   options?: ActionOptions;
 };
 
@@ -27,22 +24,19 @@ interface ActionOptions {
   onCompleted?: () => void;
 }
 
-export function useAction<
-TInput , TOuput 
->(
-  action: UseActionProps<TInput , TOuput>,
-  options: ActionOptions = {}
+export function useAction<TInput, TOuput>(
+  action: UseActionProps<TInput, TOuput>,
+  options: ActionOptions = {},
 ) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
-  const [fieldErrors, setFieldErrors] = useState<
-    string[] | undefined
-  >(undefined);
+  const [fieldErrors, setFieldErrors] = useState<string[] | undefined>(
+    undefined,
+  );
   const [data, setData] = useState<TOuput | undefined>(undefined);
   const form: UseFormReturn = useForm({
     resolver: zodResolver(action.schema),
   });
-
 
   const execute = useCallback(
     async (values: z.infer<typeof action.schema>) => {
@@ -81,7 +75,7 @@ TInput , TOuput
         options?.onCompleted?.();
       }
     },
-    [action, form, options]
+    [action, form, options],
   );
 
   return { form, isLoading, execute, options, error, data, fieldErrors };
