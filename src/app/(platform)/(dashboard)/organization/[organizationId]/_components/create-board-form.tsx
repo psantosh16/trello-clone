@@ -18,13 +18,12 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 
 export const BoardCreationForm = () => {
   const router = useRouter();
   const popButtonRef = useRef<HTMLButtonElement>(null);
-  const { form, isLoading, execute, fieldErrors } = useAction(
+  const { form, isLoading, execute, fieldErrors , error} = useAction(
     {
       schema: CreateBoardSchema,
       method: createBoard,
@@ -35,7 +34,7 @@ export const BoardCreationForm = () => {
         popButtonRef.current?.click();
         router.push(`/board/${data.id}`);
       },
-      onError: (error) => {
+      onError: (error: string) => {
         toast.error(error);
       },
     },
@@ -44,6 +43,9 @@ export const BoardCreationForm = () => {
   function handleSubmit(formData: FormData) {
     const title = formData.get("title") as string;
     const image = formData.get("image") as string;
+    if (!title || !image) {
+      return;
+    }
     execute({ title, image });
   }
 
@@ -54,11 +56,12 @@ export const BoardCreationForm = () => {
           <FormField
             name="title"
             control={form.control}
+            defaultValue=""
             render={({ field }) => (
               <FormItem>
                 <FormPicker
                   id="asa"
-                  errors={fieldErrors} //TODO change this
+                  errors={error ?  ["Something went wrong"] :[""]}
                 />
                 <FormLabel>Title</FormLabel>
                 <FormControl>
@@ -80,7 +83,7 @@ export const BoardCreationForm = () => {
                     <X className="size-4" />
                   </Button>
                 </PopoverClose>
-                <FormMessage />
+                {/* <FormMessage /> */}
               </FormItem>
             )}
           />

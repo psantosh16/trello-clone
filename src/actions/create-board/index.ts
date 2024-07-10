@@ -11,21 +11,23 @@ const handler = async (
 ): Promise<ActionState<InputType, OutputType>> => {
   const { orgId, userId } = auth();
 
-   console.clear();
+
   if (!orgId || !userId || orgId === undefined || userId === undefined) {
     return {
       error: "Organization or user not found",
     };
   }
 
+  
+  const { title, image } = data;
+  
   if (!data || data === undefined || data === null) { 
+    console.log("Data is missing",data);
     return {
       error: "Data is missing",
     };
   }
-
-  const { title, image } = data;
-
+  
   if (!title || !image || title === undefined || image === undefined || title === "" || image === "") {
     return {
       error: "Title or image is missing",
@@ -49,18 +51,17 @@ const handler = async (
 
   let board;
   try {
-    throw new Error("Not implemented");
-    // board = await db.board.create({
-    //   data: {
-    //     title,
-    //     orgId,
-    //     imageId,
-    //     imageThumbUrl,
-    //     imageFullUrl,
-    //     imageLinkHtml,
-    //     imageUserName,
-    //   },
-    // });
+    board = await db.board.create({
+      data: {
+        title,
+        orgId,
+        imageId,
+        imageThumbUrl,
+        imageFullUrl,
+        imageLinkHtml,
+        imageUserName,
+      },
+    });
   } catch (error) {
     return {
       error: "Failed to create",

@@ -65,6 +65,7 @@ export const FormPicker = ({ id, errors }: FormPickerProps) => {
             )}
             onClick={() => {
               if (pending) return;
+              console.log("Image selected", image.id);
               setSelectedImage(image.id);
             }}
           >
@@ -76,10 +77,10 @@ export const FormPicker = ({ id, errors }: FormPickerProps) => {
             <Input
               type="radio"
               name="image"
-              readOnly
               value={`${image.id}|${image.urls.thumb}|${image.urls.full}|${image.links.html}|${image.user.name}`}
               className="hidden"
               checked={selectedImage === image.id}
+              readOnly
               disabled={pending}
             />
             <Image

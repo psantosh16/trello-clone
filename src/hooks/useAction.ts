@@ -48,15 +48,18 @@ TInput , TOuput
     async (values: z.infer<typeof action.schema>) => {
       setIsLoading(true);
       try {
+        console.log("before data ", values);
         const data = action.schema.safeParse(values);
+        console.log("after data ", data);
         if (!data.success) {
-          console.log("useAction Data error ", data.error.message);
-          options?.onError?.(data.error);
-          setError(data.error.message);
+          console.log("useAction Data error ", data.error.errors[0].message);
+          options?.onError?.(data.error.errors[0].message);
+          setError(data.error.errors[0].message);
+          return;
         }
         const result = await action.method(data?.data!);
         if (result.error) {
-          console.log("useAction error ", result.error);
+          console.log("useAction error ", result.fieldErrors);
           options.onError?.(result.error);
           setError(result.error);
         }
@@ -64,6 +67,7 @@ TInput , TOuput
           console.log("useAction fieldError ", result.error);
           options.onError?.(result.error);
           setFieldErrors(result.fieldErrors);
+          setData(undefined);
         }
         if (result.data) {
           console.log("useAction data ", result.data);
@@ -77,7 +81,7 @@ TInput , TOuput
         options?.onCompleted?.();
       }
     },
-    [action, form, options , data , error , fieldErrors]
+    [action, form, options]
   );
 
   return { form, isLoading, execute, options, error, data, fieldErrors };
