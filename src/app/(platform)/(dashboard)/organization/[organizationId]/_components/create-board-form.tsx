@@ -37,7 +37,7 @@ export const BoardCreationForm = () => {
       onError: (error: string) => {
         toast.error(error);
       },
-    },
+    }
   );
 
   function handleSubmit(formData: FormData) {
@@ -71,7 +71,7 @@ export const BoardCreationForm = () => {
                     {...field}
                     className={cn(
                       "",
-                      isLoading ? "cursor-not-allowed border-neutral-500" : "",
+                      isLoading ? "cursor-not-allowed border-neutral-500" : ""
                     )}
                   />
                 </FormControl>
