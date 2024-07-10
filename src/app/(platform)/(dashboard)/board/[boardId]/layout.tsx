@@ -27,7 +27,7 @@ export async function generateMetadata({
   });
 
   return {
-    title: board?.title.toUpperCase() || "Board",
+    title: board?.title || "Board",
   };
 }
 
