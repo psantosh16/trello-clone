@@ -37,7 +37,6 @@ export const BoardList = async () => {
           </Card>
         </FormPopover>
         {boards.map((b) => {
-          console.log("Board Id ==> ", b.id);
           return (
             <span key={b.id}>
               <Link href={`/board/${b.id}`} replace>
@@ -68,6 +67,18 @@ BoardList.Skeleton = function BoardListSkeleton() {
         Board List
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <Card className="aspect-video relative h-full w-full bg-muted flex justify-center items-center gap-y-1 hover:opacity-75 transition-opacity">
+          <Skeleton className="w-full h-full" />
+        </Card>
+        <Card className="aspect-video relative h-full w-full bg-muted flex justify-center items-center gap-y-1 hover:opacity-75 transition-opacity">
+          <Skeleton className="w-full h-full" />
+        </Card>
+        <Card className="aspect-video relative h-full w-full bg-muted flex justify-center items-center gap-y-1 hover:opacity-75 transition-opacity">
+          <Skeleton className="w-full h-full" />
+        </Card>
+        <Card className="aspect-video relative h-full w-full bg-muted flex justify-center items-center gap-y-1 hover:opacity-75 transition-opacity">
+          <Skeleton className="w-full h-full" />
+        </Card>
         <Card className="aspect-video relative h-full w-full bg-muted flex justify-center items-center gap-y-1 hover:opacity-75 transition-opacity">
           <Skeleton className="w-full h-full" />
         </Card>
