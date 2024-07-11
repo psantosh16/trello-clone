@@ -132,6 +132,25 @@ exports.Prisma.BoardScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ListScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  order: 'order',
+  boardId: 'boardId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CardScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  order: 'order',
+  decription: 'decription',
+  listId: 'listId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -142,9 +161,16 @@ exports.Prisma.QueryMode = {
   insensitive: 'insensitive'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+
 
 exports.Prisma.ModelName = {
-  Board: 'Board'
+  Board: 'Board',
+  List: 'List',
+  Card: 'Card'
 };
 
 /**

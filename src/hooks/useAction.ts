@@ -26,12 +26,12 @@ interface ActionOptions {
 
 export function useAction<TInput, TOuput>(
   action: UseActionProps<TInput, TOuput>,
-  options: ActionOptions = {},
+  options: ActionOptions = {}
 ) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
   const [fieldErrors, setFieldErrors] = useState<string[] | undefined>(
-    undefined,
+    undefined
   );
   const [data, setData] = useState<TOuput | undefined>(undefined);
   const form: UseFormReturn = useForm({
@@ -42,40 +42,44 @@ export function useAction<TInput, TOuput>(
     async (values: z.infer<typeof action.schema>) => {
       setIsLoading(true);
       try {
-        console.log("before data ", values);
         const data = action.schema.safeParse(values);
-        console.log("after data ", data);
         if (!data.success) {
-          console.log("useAction Data error ", data.error.errors[0].message);
+          // console.log("useAction Data error ", data.error.errors[0].message);
           options?.onError?.(data.error.errors[0].message);
           setError(data.error.errors[0].message);
           return;
         }
         const result = await action.method(data?.data!);
-        if (result.error) {
-          console.log("useAction error ", result.fieldErrors);
-          options.onError?.(result.error);
-          setError(result.error);
+        if (result) {
+          if (result.error) {
+            // console.log("useAction error ", result.fieldErrors);
+            options.onError?.(result.error);
+            setError(result.error);
+            return;
+          }
+          if (result.fieldErrors) {
+            // console.log("useAction fieldError ", result.error);
+            options.onError?.(result.error);
+            setFieldErrors(result.fieldErrors);
+            return;
+          }
+          if (result.data) {
+            // console.log("useAction data ", result.data);
+            options.onSuccess?.(result.data);
+            setData(result.data);
+            return;
+          }
+        } else {
+          options.onError?.("Something went wrong");
+          setError("Error in server side");
         }
-        if (result.fieldErrors) {
-          console.log("useAction fieldError ", result.error);
-          options.onError?.(result.error);
-          setFieldErrors(result.fieldErrors);
-          setData(undefined);
-        }
-        if (result.data) {
-          console.log("useAction data ", result.data);
-          options.onSuccess?.(result.data);
-          setData(result.data);
-        }
-
-        form.reset();
       } finally {
+        form.reset();
         setIsLoading(false);
         options?.onCompleted?.();
       }
     },
-    [action, form, options],
+    [action, form, options]
   );
 
   return { form, isLoading, execute, options, error, data, fieldErrors };

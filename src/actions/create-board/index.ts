@@ -6,9 +6,7 @@ import { revalidatePath } from "next/cache";
 import { ActionState } from "@/hooks/useAction";
 import { InputType, OutputType } from "./type";
 
-const handler = async (
-  data: InputType,
-): Promise<ActionState<InputType, OutputType>> => {
+const handler = async (data: InputType): Promise<OutputType> => {
   const { orgId, userId } = auth();
 
   if (!orgId || !userId || orgId === undefined || userId === undefined) {
@@ -76,7 +74,7 @@ const handler = async (
   revalidatePath(`/boards/${board.id}`);
 
   return {
-    data: board as OutputType,
+    data: board,
   };
 };
 
