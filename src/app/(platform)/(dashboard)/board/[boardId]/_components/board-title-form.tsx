@@ -35,7 +35,7 @@ export const BoardTitleForm = ({ data }: BoardTitleProps) => {
         toast.error(`${error}`);
         disableEditing();
       },
-    }
+    },
   );
 
   const disableEditing = () => {

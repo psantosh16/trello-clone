@@ -32,7 +32,7 @@ export const BoardOptions = ({ id }: BoardOptionsProps) => {
       onError(error) {
         toast.error(error);
       },
-    }
+    },
   );
 
   const onClick = () => {

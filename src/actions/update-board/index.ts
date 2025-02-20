@@ -7,7 +7,7 @@ import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
 const handler = async (
-  data: InputType
+  data: InputType,
 ): Promise<ActionState<InputType, OutputType>> => {
   const { userId, orgId } = auth();
 
