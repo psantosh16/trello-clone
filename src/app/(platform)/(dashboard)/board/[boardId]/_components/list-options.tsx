@@ -23,12 +23,12 @@ interface ListOptionsProps {
   onAddCard: () => void;
 }
 
-export const ListOptions = ({ data ,onAddCard}: ListOptionsProps) => {
+export const ListOptions = ({ data, onAddCard }: ListOptionsProps) => {
   // const formReef = useRef<HTMLFormElement>(null);
   // const inputRef = useRef<HTMLInputElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
 
-  const { execute:executeDelete } = useAction(
+  const { execute: executeDelete } = useAction(
     {
       schema: DeleteListSchema,
       method: deleteList,
@@ -41,10 +41,10 @@ export const ListOptions = ({ data ,onAddCard}: ListOptionsProps) => {
       onError: (error) => {
         toast.error(error);
       },
-    },
+    }
   );
 
-  const { execute:executeCopy } = useAction(
+  const { execute: executeCopy } = useAction(
     {
       schema: CopyListSchema,
       method: copyList,
@@ -57,18 +57,17 @@ export const ListOptions = ({ data ,onAddCard}: ListOptionsProps) => {
       onError: (error) => {
         toast.error(error);
       },
-    },
+    }
   );
 
-
-  const onDelete = () => { 
+  const onDelete = () => {
     executeDelete({ id: data.id, boardId: data.boardId });
   };
 
-  const onCopy = () => { 
+  const onCopy = () => {
     executeCopy({ id: data.id, boardId: data.boardId });
   };
-  
+
   return (
     <Popover>
       <PopoverTrigger>
@@ -80,9 +79,7 @@ export const ListOptions = ({ data ,onAddCard}: ListOptionsProps) => {
         <div className="text-sm font-medium text-center text-neutral-600 pb-4">
           List Options
         </div>
-        <PopoverClose ref={
-          closeRef
-        }>
+        <PopoverClose ref={closeRef}>
           <Button
             variant="ghost"
             className="size-auto p-2 absolute top-2 right-2  text-neutral-600"
@@ -92,14 +89,12 @@ export const ListOptions = ({ data ,onAddCard}: ListOptionsProps) => {
         </PopoverClose>
         <Button
           className="w-full rounded-none h-auto px-5 justify-start text-left text-sm font-medium text-neutral-900 hover:bg-neutral-100 hover:text-neutral-900"
-          // onClick={onAddCard}
+          onClick={onAddCard}
           variant="ghost"
         >
           Add Card...
         </Button>{" "}
-        <form className="flex-1 px-[2px]"
-         action={onCopy}
-        >
+        <form className="flex-1 px-[2px]" action={onCopy}>
           <input name="id" id="id" hidden value={data.id} />
           <input name="boardId" id="boardId" hidden value={data.boardId} />
           <Button
@@ -113,9 +108,7 @@ export const ListOptions = ({ data ,onAddCard}: ListOptionsProps) => {
           </Button>
         </form>
         <Separator />
-        <form className="flex-1 px-[2px]"
-          action={onDelete}
-        >
+        <form className="flex-1 px-[2px]" action={onDelete}>
           <input name="id" id="id" hidden value={data.id} />
           <input name="boardId" id="boardId" hidden value={data.boardId} />
           <Button
