@@ -39,7 +39,7 @@ export const ListItem = ({ index, data }: ListItemProps) => {
           )}
         >
           {data.cards.map((card, index) => (
-            <CardItem data={card} index={index} />
+            <CardItem key={index} data={card} index={index} />
           ))}
         </ol>
         <CardForm
