@@ -27,7 +27,7 @@ export default clerkMiddleware((auth, req: NextRequest) => {
   ) {
     const orgSelection = new URL("/select-org", req.url);
     console.log(
-      "User ID present, but no org ID. Redirecting to org selection."
+      "User ID present, but no org ID. Redirecting to org selection.",
     );
     return NextResponse.redirect(orgSelection);
   }
@@ -37,7 +37,7 @@ export default clerkMiddleware((auth, req: NextRequest) => {
     const organizationUrl = new URL(`/organization/${auth().orgId}`, req.url);
     console.log(
       "Authenticated user with org ID. Redirecting to organization route:",
-      organizationUrl
+      organizationUrl,
     );
     return NextResponse.redirect(organizationUrl);
   }

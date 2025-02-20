@@ -13,26 +13,29 @@ const handler = async (data: InputType): Promise<OutputType> => {
     };
   }
 
-  const { title, boardId } = data;
-  let list;
+  const { title, boardId, listId } = data;
+  let card;
 
   try {
-    const board = await db.board.findUnique({
+    const list = await db.list.findUnique({
       where: {
-        id: boardId,
-        orgId,
+        id: listId,
+        boardId,
+        board: {
+          orgId,
+        },
       },
     });
 
-    if (!board) {
+    if (!list) {
       return {
-        error: "Board not found.",
+        error: "List not found.",
       };
     }
 
-    const lastList = await db.list.findFirst({
+    const lastCard = await db.card.findFirst({
       where: {
-        boardId,
+        listId,
       },
       orderBy: {
         order: "desc",
@@ -42,12 +45,12 @@ const handler = async (data: InputType): Promise<OutputType> => {
       },
     });
 
-    const newOrder = lastList ? lastList.order + 1 : 1;
+    const newOrder = lastCard ? lastCard.order + 1 : 1;
 
-    list = await db.list.create({
+    card = await db.card.create({
       data: {
         title,
-        boardId,
+        listId,
         order: newOrder,
       },
     });
@@ -56,10 +59,11 @@ const handler = async (data: InputType): Promise<OutputType> => {
       error: "Failed to create.",
     };
   }
+
   revalidatePath(`/board/${boardId}`);
   return {
-    data: list,
+    data: card,
   };
 };
 
-export const CreateList = handler;
+export const createCard = handler;

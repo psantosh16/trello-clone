@@ -44,7 +44,7 @@ export const ListForm = () => {
       onError(error) {
         toast.error(error);
       },
-    }
+    },
   );
 
   const onKeyDown = (e: KeyboardEvent) => {

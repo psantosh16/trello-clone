@@ -26,12 +26,12 @@ interface ActionOptions {
 
 export function useAction<TInput, TOuput>(
   action: UseActionProps<TInput, TOuput>,
-  options: ActionOptions = {}
+  options: ActionOptions = {},
 ) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
   const [fieldErrors, setFieldErrors] = useState<string[] | undefined>(
-    undefined
+    undefined,
   );
   const [data, setData] = useState<TOuput | undefined>(undefined);
   const form: UseFormReturn = useForm({
@@ -79,7 +79,7 @@ export function useAction<TInput, TOuput>(
         options?.onCompleted?.();
       }
     },
-    [action, form, options]
+    [action, form, options],
   );
 
   return { form, isLoading, execute, options, error, data, fieldErrors };

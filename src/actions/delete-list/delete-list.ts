@@ -13,13 +13,16 @@ const handler = async (data: InputType): Promise<OutputType> => {
       error: "Unauthorized",
     };
   }
-  const { id } = data;
-  let board;
+  const { id,boardId } = data;
+  let list;
   try {
-    board = await db.board.delete({
+    list = await db.list.delete({
       where: {
         id,
-        orgId,
+        boardId,
+        board: {
+          orgId,
+        },
       },
     });
   } catch (e) {
@@ -27,10 +30,10 @@ const handler = async (data: InputType): Promise<OutputType> => {
       error: "Failed to delete.",
     };
   }
-  revalidatePath(`/organization/${orgId}`);
+  revalidatePath(`/board/${boardId}`);
   return {
-    data: board,
+    data: list,
   };
 };
 
-export const deleteBoard = handler;
+export const deleteList = handler;
