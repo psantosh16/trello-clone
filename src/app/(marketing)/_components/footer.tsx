@@ -21,6 +21,15 @@ const Footer = () => {
       </Link>
       <div className="space-x-2 md:block md:w-auto flex items-center justify-between w-full">
         <Button size="sm" variant="ghost">
+          <Link
+            href="https://github.com/psantosh16/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            @Github
+          </Link>
+        </Button>
+        <Button size="sm" variant="ghost">
           Privacy Policy
         </Button>
         <Button size="sm" variant="ghost">
