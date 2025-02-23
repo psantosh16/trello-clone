@@ -1,6 +1,8 @@
-# Tasakus
+![image](https://github.com/user-attachments/assets/f90c699f-bde6-45dd-bfcb-10862e27176a)
 
-Tasakus is a simple Trello clone built with Next.js and Redux, designed to replicate core functionalities of the popular task management tool, Trello.
+
+# Tasakus
+Tasakus [(Tasuku) means "task" in Japanese*] is a simple Trello clone built with Next.js and Redux, designed to replicate core functionalities of the popular task management tool, Trello.
 
 ## Features
 
@@ -93,13 +95,6 @@ tasakus/
 └─ .env                      # Environment variables
 ```
 
-## Contributing
-
-Contributions are welcome! If you'd like to contribute to this project, please fork the repository and create a pull request with your changes.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
 
 ## Acknowledgements
 
